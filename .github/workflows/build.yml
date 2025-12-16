@@ -1,0 +1,35 @@
+name: Build Koh in Codespace
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: 🧾 Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup NuGet (required for .NET restore)
+      uses: NuGet/setup-nuget@v1
+
+    - name: Install Visual Studio Build Tools
+      uses: microsoft/setup-msbuild@v1
+
+    - name: Restore NuGet packages
+      run: nuget restore Koh.sln
+
+    - name: Build Koh.sln (Release)
+      run: |
+        msbuild Koh.sln /p:Configuration=Release /p:Platform="Any CPU"
+
+    - name: ✨ Output artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: koh-release
+        path: |
+          Koh/bin/Release/
+          Koh.exe
