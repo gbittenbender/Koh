@@ -27,7 +27,7 @@ jobs:
         msbuild Koh.sln /p:Configuration=Release /p:Platform="Any CPU"
 
     - name: ✨ Output artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: koh-release
         path: |
